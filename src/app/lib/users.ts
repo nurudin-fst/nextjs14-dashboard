@@ -141,8 +141,8 @@ export async function deleteUser(id: string) {
       }
     );
     revalidatePath("/dashboard/users");
-    return { message: "Deleted Invoice." };
+    return { message: "Deleted User." };
   } catch (error) {
-    return { message: "Database Error: Failed to Delete Invoice." };
+    return { message: "Database Error: Failed to Delete User." };
   }
 }

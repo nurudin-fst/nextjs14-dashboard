@@ -92,3 +92,16 @@ export type UserForm = {
   username: string;
   name: string;
 }
+
+export type MerchantForm = {
+  id: string;
+  merchantFullName: string;
+  merchantShortName: string;
+  city: string;
+  postcode: string;
+  criteria: string;
+  terminalQuantity: string;
+  merchantType: string;
+  npwp: string;
+  qrType: string;
+}

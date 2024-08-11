@@ -9,7 +9,7 @@ type User = {
   username: string;
 };
 
-export default async function InvoicesTable({ users }: { users: User[] }) {
+export default async function UsersTable({ users }: { users: User[] }) {
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">

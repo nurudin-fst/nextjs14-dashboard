@@ -1,20 +1,29 @@
 import Search from '@/app/ui/search';
-import {CreateInvoice} from '@/app/ui/invoices/buttons';
 import {lusitana} from '@/app/ui/fonts';
 import {MerchantTableSkeleton} from "@/app/ui/skeletons";
 import React, {Suspense} from "react";
-import Table from '@/app/ui/invoices/table';
-import Pagination from "@/app/ui/invoices/pagination";
+import Table from '@/app/ui/merchants/table';
 import {Metadata} from "next";
-import {fetchMerchantPages} from "@/app/lib/merchantsData";
+import Pagination from '@/app/ui/merchants/pagination';
+import { CreateMerchant } from '@/app/ui/merchants/buttons';
+
+const fetchMerchants = async (query: string, currentPage: number) => {
+    const response = await fetch(`https://61a0ea8a6c3b400017e69ae8.mockapi.io/api/v1/users/merchants?search=${query}`);
+    const data = await response.json();
+    const startIndex = (currentPage - 1) * 10
+    return {
+        merchants: data.slice(startIndex, startIndex + 10),
+        count: data.length
+    };
+};
 
 export const metadata: Metadata = {
     title: 'Merchants',
 };
 
 export default async function Page({
-                                       searchParams,
-                                   }: {
+    searchParams,
+}: {
     searchParams?: {
         query?: string;
         page?: string;
@@ -22,7 +31,7 @@ export default async function Page({
 }) {
     const query = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
-    const totalPages = await fetchMerchantPages(query);
+    const data = await fetchMerchants(query, currentPage)
     return (
         <div className="w-full">
             <div className="flex w-full items-center justify-between">
@@ -30,13 +39,13 @@ export default async function Page({
             </div>
             <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
                 <Search placeholder="Search merchants..."/>
-                <CreateInvoice/>
+                <CreateMerchant/>
             </div>
             <Suspense key={query + currentPage} fallback={<MerchantTableSkeleton/>}>
-                <Table query={query} currentPage={currentPage}/>
+                <Table merchants={data.merchants} />
             </Suspense>
             <div className="mt-5 flex w-full justify-center">
-                <Pagination totalPages={totalPages}/>
+                <Pagination totalPages={Math.ceil(data.count / 10)}/>
             </div>
         </div>
     );
