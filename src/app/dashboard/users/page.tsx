@@ -7,11 +7,12 @@ import Table from '@/app/ui/users/table';
 import {Metadata} from "next";
 import Pagination from '@/app/ui/users/pagination';
 
-const fetchUsers = async (query: string) => {
+const fetchUsers = async (query: string, currentPage: number) => {
     const response = await fetch(`https://61a0ea8a6c3b400017e69ae8.mockapi.io/api/v1/users/users?search=${query}`);
     const data = await response.json();
+    const startIndex = (currentPage - 1) * 10
     return {
-        users: data,
+        users: data.slice(startIndex, startIndex + 10),
         count: data.length
     };
 };
@@ -30,7 +31,7 @@ export default async function Page({
 }) {
     const query = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
-    const data = await fetchUsers(query)
+    const data = await fetchUsers(query, currentPage)
     return (
         <div className="w-full">
             <div className="flex w-full items-center justify-between">
@@ -44,7 +45,7 @@ export default async function Page({
                 <Table users={data.users} />
             </Suspense>
             <div className="mt-5 flex w-full justify-center">
-                <Pagination totalPages={data.count}/>
+                <Pagination totalPages={Math.ceil(data.count / 10)}/>
             </div>
         </div>
     );
