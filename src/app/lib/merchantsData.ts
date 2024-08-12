@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 
 const ITEMS_PER_PAGE = 10;
 
-export async function fetchMerchantPages(query: string) {
+export async function FetchMerchantPages(query: string) {
     try {
         //       const count = await sql`SELECT COUNT(*)
         //   FROM invoices
