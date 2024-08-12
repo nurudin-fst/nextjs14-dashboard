@@ -86,3 +86,22 @@ export type InvoiceForm = {
   amount: number;
   status: 'pending' | 'paid';
 };
+
+export type UserForm = {
+  id: string;
+  username: string;
+  name: string;
+}
+
+export type MerchantForm = {
+  id: string;
+  merchantFullName: string;
+  merchantShortName: string;
+  city: string;
+  postcode: string;
+  criteria: string;
+  terminalQuantity: string;
+  merchantType: string;
+  npwp: string;
+  qrType: string;
+}
